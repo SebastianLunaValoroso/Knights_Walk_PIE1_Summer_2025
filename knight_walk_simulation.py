@@ -130,6 +130,11 @@ class Knight_Board:
             self.matrix()[move[0]][move[1]]-=1 #se añade el caballo a la posición de destino
             self._knight_pos=move
     
+    def next(self)->tuple[int,int]:
+        """Realiza el siguiente movimiento del Knight y devuelve su nueva posición"""
+        self.play_jump(self.generate_knight_moves())
+        return self.knight_pos()
+    
 
 
 
@@ -173,6 +178,9 @@ def main()->None:
     squares,chess_pos,steps,torus,occupied_pos=main_inputs()
     tablero=Knight_Board(chess_pos,squares,torus,occupied_pos)
     print(tablero)
+    print(f'pos_inicial:{tablero.knight_pos()}')
+    for i in range(steps):
+        print(f'pos_paso_{i+1}:{tablero.next()}')
     
 
 main()
