@@ -1,6 +1,7 @@
 import numpy as np
 from math import sqrt
 from typing import TypeVar,Any
+from yogi import read,scan
 
 T = TypeVar("T", bound=Any)
 
@@ -128,14 +129,50 @@ class Knight_Board:
             self.matrix()[knight_pos[0]][knight_pos[1]]-=1 #se retira el caballo de la posición de origen
             self.matrix()[move[0]][move[1]]-=1 #se añade el caballo a la posición de destino
             self._knight_pos=move
+    
 
 
 
+def main_inputs()->tuple[int,str,int,bool,list[str]]:
+    """Permite seleccionar los parámetros inciales de entrada y los devuelve"""
+
+    print("Choose the board's squares (it will create an sqrt(squares) x sqrt(squares) board, write -1 to leave default squares=64):")
+    squares=read(int)
+    if squares<=-1:squares=64
+    print(f'{squares} selected!')
+
+    print("Choose the knight's initial position (format: columnrow, write -1 to leave default position 'b1'):")
+    ches_pos=read(str)
+    if ches_pos=="-1":ches_pos="b1"
+    print(f'{ches_pos} position selected!')
+
+    print("Choose the knight's steps (write -1 to leave the default steps=10):")
+    steps=read(int)
+    if steps<=-1:steps=10
+    print(f'{steps} steps selected!')
+
+    print("Choose whether the chess board should be a torus: (format: T for True, F for False, write -1 to leave the default option torus=False):")
+    torus_str=read(str)
+    if torus_str=="-1" or torus_str=="F":torus=False
+    else: torus=True
+    print(f'torus={torus} selected!')
+
+    print("Add other pieces position's (to stop input enter Ctr+D Linux/macOS or Ctr+Z Windows):")
+    occupied_pos:list[str]=[]
+    piece_pos=scan(str)
+    while piece_pos is not None:
+        occupied_pos.append(piece_pos)
+        piece_pos=scan(str)
+    print(f'{occupied_pos} positions selected!')
+
+    return (squares,ches_pos,steps,torus,occupied_pos)
 
 
 def main()->None:
-    xt=np.random.uniform(0,1,10) # o numpy.random.randint(low, high=None, size=None, dtype='l') Returns random integers from the “discrete uniform” distribution
-    print(xt)
-
+    #Inputs Iniciales
+    squares,chess_pos,steps,torus,occupied_pos=main_inputs()
+    tablero=Knight_Board(chess_pos,squares,torus,occupied_pos)
+    print(tablero)
+    
 
 main()

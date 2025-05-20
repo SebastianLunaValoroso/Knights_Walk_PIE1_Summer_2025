@@ -13,4 +13,6 @@ def test_valid_square()->None:
         valid_square(8,"11")
     with pytest.raises(ValueError):
         valid_square(8,"1b")
+    with pytest.raises(ValueError):
+        valid_square(0,"b1")
     #añadir casos con tuple[int,int]
