@@ -10,5 +10,7 @@ version = "0.1.0"
 python = ">=3.13.3,<3.14"
 mypy = ">=1.15.0,<2"
 numpy = ">=2.2.6,<3"
-click = ">=8.2.0,<9"
 pytest = ">=8.3.5,<9"
+
+[pypi-dependencies]
+yogi = { git = "https://github.com/jutge-org/yogi" }
