@@ -199,9 +199,9 @@ def main()->None:
     #Inputs Iniciales
     squares,chess_pos,steps,torus,occupied_pos=main_inputs()
     tablero=Knight_Board(chess_pos,squares,torus,occupied_pos)
-    print(f'pos_inicial:{tablero.knight_pos()}')
+    print(f'pos_inicial: {matrix_to_chess_pos(tablero.knight_pos(),tablero.board_dimension())}')
     for i in range(steps):
-        print(f'pos_paso_{i+1}:{tablero.next()}')
+        print(f'pos_paso_{i+1}: {matrix_to_chess_pos(tablero.next(),tablero.board_dimension())}')
     
 if __name__=="__main__":
     main()
