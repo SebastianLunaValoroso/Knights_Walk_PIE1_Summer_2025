@@ -2,6 +2,8 @@ import numpy as np
 from math import sqrt
 from typing import TypeVar,Any
 from yogi import read,scan
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 T = TypeVar("T", bound=Any)
 
@@ -112,7 +114,8 @@ class Knight_Board:
     
     def valid_destination(self,dim:int,dest:tuple[int,int])->bool:
         """Devuelve True si la casilla dest existe en la matriz dim x dim del tablero y está vacía"""
-        return valid_square(dim,dest) and self.matrix()[dest[0]][dest[1]] == 0
+        #return valid_square(dim,dest) and self.matrix()[dest[0]][dest[1]] == 0
+        return valid_square(dim, dest) and self.matrix()[dest[0]][dest[1]] != -1 #modificación para uqe funcion el plot
     
     def jump_destination(self,origin:tuple[int,int],jump:tuple[int,int])->tuple[int,int]:
         """Devuelve la casilla de destino de jump aplicado a origin"""
@@ -141,14 +144,12 @@ class Knight_Board:
                 moves.append(dest)
         return moves
     
-    def play_jump(self,moves:list[tuple[int,int]])->None:
-        """Escoge y Aplica uno de los move de moves aleatoriamente siguiendo U(n), con n el número de moves"""
-        move=uniform_selection(moves)
+    def play_jump(self, moves: list[tuple[int, int]]) -> None: #Modificación para plot
+        """Escoge y aplica uno de los moves aleatoriamente siguiendo U(n), con n el número de moves"""
+        move = uniform_selection(moves)
         if move is not None:
-            knight_pos=self.knight_pos()
-            self.matrix()[knight_pos[0]][knight_pos[1]]-=1 #se retira el caballo de la posición de origen
-            self.matrix()[move[0]][move[1]]+=1 #se añade el caballo a la posición de destino
-            self._knight_pos=move
+            self.matrix()[move[0]][move[1]] += 1  # Acumula una visita
+            self._knight_pos = move
     
     def next(self)->tuple[int,int]:
         """Realiza el siguiente movimiento del Knight y devuelve su nueva posición"""
@@ -195,13 +196,50 @@ def main_inputs()->tuple[int,str,int,bool,list[str]]:
     return (squares,ches_pos,steps,torus,occupied_pos)
 
 
+
+def plot_board(board: Knight_Board, title: str = "Knight's Visit Frequency") -> None:
+    """Grafica un heatmap del tablero con las frecuencias de visita"""
+    matrix = np.array(board.matrix())
+    flipped_matrix = np.flipud(matrix)  # Para que la fila 0 esté abajo como en un tablero de ajedrez
+
+    plt.figure(figsize=(8, 6))
+    ax = sns.heatmap(flipped_matrix, annot=True, fmt="d", cmap="Blues", cbar=True, linewidths=.5, square=True)
+
+    dim = board.board_dimension()
+    ax.set_title(title)
+    ax.set_xlabel("Columnas (a-h)")
+    ax.set_ylabel("Filas (1-8)")
+
+    # Etiquetas de las columnas (letras a-h, o más si el tablero es más grande)
+    col_labels = [chr(ord("a") + i) for i in range(dim)]
+    row_labels=[f'{i}' for i in range(dim,0,-1)]
+    ax.set_xticklabels(col_labels)
+    ax.set_yticklabels(row_labels, rotation=0)
+
+    knight_row, knight_col = board.knight_pos()
+    flipped_row = dim - 1 - knight_row  # Ajustar por el flipud
+
+    # Dibujar una ♞ roja en la celda final
+    ax.text(knight_col + 0.5, flipped_row + 0.5, '♞', 
+            ha='center', va='center', color='red', fontsize=18, fontweight='bold')
+
+    plt.tight_layout()
+    plt.show()
+
+def write_knight_walk(tablero:Knight_Board,steps:int)->None:
+    """Aplica sobre el tablero #steps pasos y los escribe"""
+    print(f'pos_inicial: {matrix_to_chess_pos(tablero.knight_pos(),tablero.board_dimension())}')
+    for i in range(steps):
+        print(f'pos_paso_{i+1}: {matrix_to_chess_pos(tablero.next(),tablero.board_dimension())}')
+
 def main()->None:
     #Inputs Iniciales
     squares,chess_pos,steps,torus,occupied_pos=main_inputs()
     tablero=Knight_Board(chess_pos,squares,torus,occupied_pos)
-    print(f'pos_inicial: {matrix_to_chess_pos(tablero.knight_pos(),tablero.board_dimension())}')
-    for i in range(steps):
-        print(f'pos_paso_{i+1}: {matrix_to_chess_pos(tablero.next(),tablero.board_dimension())}')
+    write_knight_walk(tablero,steps)
+    print(f"Drawing Knight's Visit Frequency plot...")
+    plot_board(tablero,f"Knight's Visit Frequency for {steps} steps starting at {chess_pos}")
+    
     
 if __name__=="__main__":
     main()

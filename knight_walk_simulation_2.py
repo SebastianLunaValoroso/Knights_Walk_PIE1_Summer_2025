@@ -215,6 +215,6 @@ def main()->None:
     for i in range(steps):
         print(f'pos_paso_{i+1}:{tablero.next()}')
     print(f'frecuencias de visita del caballo:')
-    plot_board(tablero)
+    plot_board(tablero,f"Knight's Visit Frequency for {steps} steps starting at {chess_pos}")
 
 main()
