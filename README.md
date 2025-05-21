@@ -4,3 +4,13 @@ Este proyecto explora una variante de un antiguo problema matemático sobre los 
 ## Objetivos
 - **Modelar** los caminos que puede hacer un caballo en un tablero de Ajedrez.
 - **Evaluar** si existe una distribución estacionaria sobre las casillas en las que se mueve el caballo.
+
+## Herramientas Utilizadas
+
+- Lenguajes de programación: Python
+- Librerías Externas: NumPy, Yogi
+- Visualización: ...
+- Entorno Virtual: pixi
+
+
+
