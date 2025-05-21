@@ -20,7 +20,7 @@ def valid_square(dim:int,pos:tuple[int,int]|str)->bool:
     if type(pos) is str:
         if len(pos) >2 or pos[0].isdigit() or not(pos[1].isdigit()): raise ValueError ("Si pos es un string debe tener 2 carácteres, el primero una letra y el segundo un dígito")
         return 1 <= int(pos[1]) <= dim and "a" <= pos[0] <="h" #comparamos int(pos[1]) con 1 y dim y no 0 y dim-1 porque se empieza a contar desde el 1 si pos es un string
-    return type(pos) is tuple[int,int] and 0<=pos[0]<= dim-1 and 0<=pos[1]<= dim-1
+    return (type(pos)==tuple and len(pos)==2) and 0<=pos[0]<= dim-1 and 0<=pos[1]<= dim-1
         
 
 
@@ -42,11 +42,12 @@ def chess_pos_to_matrix(chess_pos:str,dim:int)->tuple[int,int]:
 
 def uniform_selection(lista:list[T])->T|None:
     """Escoge y Devuelve un elemento de lista de manera uniforme U(n), si lista no está vacía"""
+    #np.random.seed(13) #dev quitar----------------------------------------------------------------------------------------------------------------
     n=len(lista) #número de elementos de lista
     if n==0:
         return None
     prob=np.random.uniform(0,1)
-    for i in range(n-1):
+    for i in range(n):
         if i/n <=prob <=(i+1)/n:
             return lista[i]
     return None #para que MyPy no dé errores
@@ -127,7 +128,7 @@ class Knight_Board:
         if move is not None:
             knight_pos=self.knight_pos()
             self.matrix()[knight_pos[0]][knight_pos[1]]-=1 #se retira el caballo de la posición de origen
-            self.matrix()[move[0]][move[1]]-=1 #se añade el caballo a la posición de destino
+            self.matrix()[move[0]][move[1]]+=1 #se añade el caballo a la posición de destino
             self._knight_pos=move
     
     def next(self)->tuple[int,int]:
