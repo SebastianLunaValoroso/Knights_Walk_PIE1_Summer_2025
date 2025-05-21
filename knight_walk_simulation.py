@@ -36,13 +36,32 @@ def chess_pos_to_matrix(chess_pos:str,dim:int)->tuple[int,int]:
     """
     if dim <=0: raise ValueError ("dim debe ser > 0")
     if not(valid_square(dim,chess_pos)): raise ValueError (f'{chess_pos} no existe en el tablero de dimensión {dim}x{dim}')
-    row:dict[str,int]={f'{i+1}':i for i in range(dim)}
-    column:dict[str,int]={chr(ord("a")+i):i for i in range(dim)}
-    return (row[chess_pos[1]],column[chess_pos[0]])
+    row:int=int(chess_pos[1]) -1
+    column:int= ord(chess_pos[0])-ord("a")
+    return (row,column)
 
-def uniform_selection(lista:list[T])->T|None:
+def matrix_to_chess_pos(pos:tuple[int,int],dim:int)->str:
+    """Devuelve el indice de la casilla en formato 'columnrow' que correponde a los indices de la matriz del board.
+
+    Prec:
+
+    :param pos:
+        Formato (row,column), row y column son enteros\n
+        La casilla debe existir en el tablero dim x dim 
+    :param dim: dim> 0 
+    """
+    if dim <=0: raise ValueError ("dim debe ser > 0")
+    if not(valid_square(dim,pos)): raise ValueError (f'{pos} no existe en el tablero de dimensión {dim}x{dim}')
+    row:str=f'{pos[0]+1}'
+    column:str=chr(ord("a")+pos[1])
+    return column+row
+
+
+
+def uniform_selection(lista:list[T],semilla:int|None=None)->T|None:
     """Escoge y Devuelve un elemento de lista de manera uniforme U(n), si lista no está vacía"""
-    #np.random.seed(13) #dev quitar----------------------------------------------------------------------------------------------------------------
+    if semilla is not None:
+        np.random.seed(semilla) #para debug o juegos de test
     n=len(lista) #número de elementos de lista
     if n==0:
         return None
@@ -171,6 +190,8 @@ def main_inputs()->tuple[int,str,int,bool,list[str]]:
         piece_pos=scan(str)
     print(f'{occupied_pos} positions selected!')
 
+    print('',end="\n\n\n") #saltos de línea
+
     return (squares,ches_pos,steps,torus,occupied_pos)
 
 
@@ -178,10 +199,9 @@ def main()->None:
     #Inputs Iniciales
     squares,chess_pos,steps,torus,occupied_pos=main_inputs()
     tablero=Knight_Board(chess_pos,squares,torus,occupied_pos)
-    print(tablero)
     print(f'pos_inicial:{tablero.knight_pos()}')
     for i in range(steps):
         print(f'pos_paso_{i+1}:{tablero.next()}')
     
-
-main()
+if __name__=="__main__":
+    main()
