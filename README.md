@@ -8,8 +8,8 @@ Este proyecto explora una variante de un antiguo problema matemático sobre los 
 ## Herramientas Utilizadas
 
 - Lenguajes de programación: Python
-- Librerías Externas: NumPy, Yogi
-- Visualización: ...
+- Librerías Externas: numpy, yogi, seaborn
+- Visualización: matplotlib
 - Entorno Virtual: pixi
 
 

@@ -192,7 +192,7 @@ def plot_board(board: Knight_Board, title: str = "Knight's Visit Frequency") -> 
 
     # Etiquetas de las columnas (letras a-h, o más si el tablero es más grande)
     col_labels = [chr(ord("a") + i) for i in range(dim)]
-    row_labels = list(range(1, dim + 1))[::-1]  # Invertido por flipud
+    row_labels=[f'{i}' for i in range(dim,0,-1)]
     ax.set_xticklabels(col_labels)
     ax.set_yticklabels(row_labels, rotation=0)
 
