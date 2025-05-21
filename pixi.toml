@@ -11,6 +11,9 @@ python = ">=3.13.3,<3.14"
 mypy = ">=1.15.0,<2"
 numpy = ">=2.2.6,<3"
 pytest = ">=8.3.5,<9"
+matplotlib = ">=3.10.3,<4"
+seaborn = ">=0.13.2,<0.14"
+types-seaborn = ">=0.13.2.20240417,<0.14"
 
 [pypi-dependencies]
 yogi = { git = "https://github.com/jutge-org/yogi" }
