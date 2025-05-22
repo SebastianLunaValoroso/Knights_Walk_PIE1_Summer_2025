@@ -211,7 +211,7 @@ def plot_board(board: Knight_Board, title: str = "Knight's Visit Frequency") -> 
     ax.set_ylabel("Filas (1-8)")
 
     # Etiquetas de las columnas (letras a-h, o más si el tablero es más grande)
-    col_labels = [chr(ord("a") + i) for i in range(dim)]
+    col_labels=(chr(i) if i <= 122 else chr(69+i) for i in range(97,dim+97))
     row_labels=[f'{i}' for i in range(dim,0,-1)]
 
     # Aumentar limite para el caso 50x50

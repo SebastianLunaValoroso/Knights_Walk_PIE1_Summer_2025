@@ -207,14 +207,22 @@ def plot_board(board: Knight_Board, title: str = "Knight's Visit Frequency") -> 
 
     dim = board.board_dimension()
     ax.set_title(title)
-    ax.set_xlabel("Columnas (a-h)")
-    ax.set_ylabel("Filas (1-8)")
+    if dim+97 > 122: ending=chr(165+dim)
+    else: ending=chr(dim+96)
+    ax.set_xlabel(f"Columnas (a-{ending})")
+    ax.set_ylabel(f"Filas (1-{dim})")
+
+    # Aumenta el limite de labels en función de las dimensiones  del board
+    ax.set_xticks(np.arange(dim) + 0.5)
+    ax.set_yticks(np.arange(dim) + 0.5)
 
     # Etiquetas de las columnas (letras a-h, o más si el tablero es más grande)
-    col_labels = [chr(ord("a") + i) for i in range(dim)]
-    row_labels=[f'{i}' for i in range(dim,0,-1)]
+    col_labels =(chr(i) if i <= 122 else chr(69+i) for i in range(97,dim+97)) #utiliza las letras de a-z y si hay más labels continua desde el carácter Unicode À
+    row_labels=(f'{i}' for i in range(dim,0,-1))
     ax.set_xticklabels(col_labels)
     ax.set_yticklabels(row_labels, rotation=0)
+
+   
 
     knight_row, knight_col = board.knight_pos()
     flipped_row = dim - 1 - knight_row  # Ajustar por el flipud
