@@ -18,9 +18,13 @@ def plot_average_board(matrix:np.ndarray,reps:int, title: str = "Knight's Averag
     flipped_matrix = np.flipud(matrix)  # Para que la fila 0 esté abajo como en un tablero de ajedrez
 
     plt.figure(figsize=(8, 6))
-    ax = sns.heatmap(flipped_matrix, annot=True, fmt=".2f", cmap="Blues", cbar=True, linewidths=.5, square=True)
-
     dim = len(matrix)
+    if dim >=25: # ¿and reps >=15:?
+        ax = sns.heatmap(flipped_matrix, fmt=".2f", cmap="Blues", cbar=True, linewidths=.5, square=True)
+    else:
+        ax = sns.heatmap(flipped_matrix, annot=True, fmt=".2f", cmap="Blues", cbar=True, linewidths=.5, square=True)
+
+    
     ax.set_title(title)
     if dim+97 > 122: ending=chr(165+dim)
     else: ending=chr(dim+96)
@@ -59,6 +63,7 @@ def main()->None:
         print(f"Camino_{i}:")
         write_knight_walk(tablero,steps)
         accumulator_matrix=accumulator_matrix + np.array(tablero.matrix())
+    print(f"Drawing Knight's Average Visit Frequency plot...")
     plot_average_board(accumulator_matrix,reps,f"Knight's Average Visit Frequency for {steps} steps starting at {chess_pos}")
 
 if __name__=="__main__":
