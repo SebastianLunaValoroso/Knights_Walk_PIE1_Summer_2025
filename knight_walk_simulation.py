@@ -165,7 +165,7 @@ def main_inputs()->tuple[int,str,int,bool,list[str]]:
     print("Choose the board's squares (it will create an sqrt(squares) x sqrt(squares) board, write -1 to leave default squares=64):")
     squares=read(int)
     if squares<=-1:squares=64
-    print(f'{squares} selected!')
+    print(f'{squares} squares selected!')
 
     print("Choose the knight's initial position (format: columnrow, write -1 to leave default position 'b1'):")
     ches_pos=read(str)
